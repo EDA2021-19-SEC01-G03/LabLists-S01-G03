@@ -19,7 +19,7 @@
  * You should have received a copy of the GNU General Public License
  * along withthis program.  If not, see <http://www.gnu.org/licenses/>.
  """
-
+import time as t 
 import config as cf
 import sys
 import controller
@@ -88,6 +88,8 @@ while True:
     printMenu()
     inputs = input('Seleccione una opción para continuar\n')
     if int(inputs[0]) == 1:
+        t1 = t.time_ns()
+
         print("Cargando información de los archivos ....")
         catalog = initCatalog()
         loadData(catalog)
@@ -96,16 +98,29 @@ while True:
         print('Géneros cargados: ' + str(lt.size(catalog['tags'])))
         print('Asociación de Géneros a Libros cargados: ' +
               str(lt.size(catalog['book_tags'])))
-
+        t2 = t.time_ns()
+        delta = (t2-t1)/1000000
+        print('Tiempo de ejecucion: ' + str(delta)+' ms')
     elif int(inputs[0]) == 2:
+        t1 = t.time_ns()
+
         number = input("Buscando los TOP ?: ")
         books = controller.getBestBooks(catalog, int(number))
         printBestBooks(books)
 
+        t2 = t.time_ns()
+        delta = (t2-t1)/1000000
+        print('Tiempo de ejecucion: ' + str(delta)+ ' ms')
+
     elif int(inputs[0]) == 3:
+        t1 = t.time_ns()
         authorname = input("Nombre del autor a buscar: ")
         author = controller.getBooksByAuthor(catalog, authorname)
         printAuthorData(author)
+        
+        t2 = t.time_ns()
+        delta = (t2-t1)/1000000
+        print('Tiempo de ejecucion: ' + str(delta)+ ' ms')
 
     elif int(inputs[0]) == 4:
         label = input("Etiqueta a buscar: ")
